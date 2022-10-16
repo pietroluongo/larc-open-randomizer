@@ -10,7 +10,7 @@ interface Props {
     line: number;
     col: number;
     type?: "loadingZone" | "dropZone" | "none";
-    content?: SubBlock[];
+    content?: SubBlock[] | any;
 }
 
 interface HighlightProps {
@@ -77,7 +77,7 @@ const CubeGrid: React.FC<Props> = ({ line, col, type = "none", content }) => {
     }
 
     const updatedContent = defaultContent.map((subBlock) => {
-        const found = content.find((item) => item.coords.subX === subBlock.coords.subX && item.coords.subY === subBlock.coords.subY)
+        const found = content.find((item: SubBlock) => item.coords.subX === subBlock.coords.subX && item.coords.subY === subBlock.coords.subY)
         if (found) {
             return found
         }
