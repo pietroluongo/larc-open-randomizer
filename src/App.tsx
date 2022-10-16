@@ -15,9 +15,6 @@ interface HighlightProps {
   line: number;
   col: number;
 }
-const shouldHighlight = ({ line, col }: HighlightProps) => {
-  return (col + 1 == 2 || col + 1 == 3) && (line + 1 == 3 || line + 1 == 4) || ((col + 1 == 5 || col + 1 == 6) && (line + 1 == 3 || line + 1 == 4))
-}
 
 interface CubeProps {
   line: number;
@@ -194,10 +191,17 @@ const stuff = () => {
 
 const App = () => {
   const [blockData, setBlockData] = useState(stuff())
+  const [teamName, setTeamName] = useState("");
+  const [dateTime, setDateTime] = useState("");
+  const [round, setRound] = useState("");
   return (
     <div className="App">
       <div className="m-10">
         <h1>LARC - OPEN</h1>
+        <hr />
+        <div className='text-2xl mt-4'><b>{teamName}</b></div>
+        <div className='text-xl mt-4 font-gray-200 '>Data: {dateTime}</div>
+        <div className='text-2xl mt-4'>Rodada {round}</div>
       </div>
       <CubeGridContainer>
         {blockData.map((line, i) => {
@@ -207,9 +211,16 @@ const App = () => {
         })}
       </CubeGridContainer>
       <div className="m-10">
-        <button onClick={() => setBlockData(stuff())}>Randomize</button>
+        <button onClick={() => setBlockData(stuff())}>Sortear</button>
+        <div className='flex flex-col'>
+          <input className="mt-2" type="text" placeholder='Nome da equipe' value={teamName} onChange={(e) => setTeamName(e.target.value)} />
+          <input className="mt-2" type="text" placeholder='Data da competição' value={dateTime} onChange={(e) => setDateTime(e.target.value)} />
+          <input className="mt-2" type="text" placeholder='Rodada' value={round} onChange={(e) => setRound(e.target.value)} />
+        </div>
+        <footer className='mt-2'>
+          Desenvolvido por Gabriel Pietroluongo
+        </footer>
       </div>
-
     </div>
   )
 }
