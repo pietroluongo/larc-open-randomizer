@@ -52,7 +52,7 @@ const CubeGrid: React.FC<Props> = ({ line, col, type = "none", content }) => {
 
     if (!content) {
         if (shouldHighlight({ line, col })) {
-            return (<div className={`border border-blue-500 p-3 w-[5rem] h-[5rem] flex items-center justify-center bg-gray-700`}>
+            return (<div className={`border border-blue-500 p-3 w-[5rem] h-[5rem] flex items-center justify-center bg-[#111111]`}>
 
             </div>)
         }
@@ -80,8 +80,6 @@ const CubeGrid: React.FC<Props> = ({ line, col, type = "none", content }) => {
         return subBlock
     })
 
-    console.log('u:', updatedContent)
-
 
     return (
         <div className={`border border-blue w-[5rem] h-[5rem] flex grid grid-cols-2`}>
@@ -91,17 +89,17 @@ const CubeGrid: React.FC<Props> = ({ line, col, type = "none", content }) => {
                         return updatedContent.map(content => {
                             if (content.coords.subX == i && content.coords.subY == j) {
                                 if (content.color) {
-                                    return <div className={`border border-blue-500 w-full h-full flex items-center justify-center bg-${content.color}-500`} >{content.color[0].toUpperCase()}</div>
+                                    return <div key={`${i}-${j}`} className={`border border-blue-500 w-full h-full flex items-center justify-center bg-${content.color}-500`} >{content.color[0].toUpperCase()}</div>
                                 }
                                 if (content.value) {
                                     if (!isNaN(+Number(content.value))) {
-                                        return <div className={`border border-blue-500 w-full h-full flex items-center justify-center bg-white text-black`}>{content.value}</div>
+                                        return <div key={`${i}-${j}`} className={`border border-blue-500 w-full h-full flex items-center justify-center bg-white text-black`}>{content.value}</div>
                                     }
-                                    return <div className={`border border-blue-500 w-full h-full flex items-center justify-center bg-purple-500`}>{content.value.toUpperCase()}</div>
+                                    return <div key={`${i}-${j}`} className={`border border-blue-500 w-full h-full flex items-center justify-center bg-purple-500`}>{content.value.toUpperCase()}</div>
                                 }
                                 return (
-                                    <div className="border border h-full w-full border-blue-500 flex items-center justify-center bg-black-500">
-                                        <div>{content.value}o</div>
+                                    <div className="border border h-full w-full border-blue-500 flex items-center justify-center text-[#242424]">
+                                        <div key={`${i}-${j}`}>{content.value}o</div>
                                     </div>
                                 )
                             }
