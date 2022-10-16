@@ -28,6 +28,9 @@ const CubeGrid: React.FC<Props> = ({ line, col, type = "none", content }) => {
         { coords: { x: line, y: col, subX: 1, subY: 0 }, value: "" },
         { coords: { x: line, y: col, subX: 1, subY: 1 }, value: "" },
     ]
+
+    console.log(`line: ${line}, col: ${col}, type: ${type}, content: ${content}`);
+
     const typeClassName = () => {
         switch (type) {
             case "loadingZone":

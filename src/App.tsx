@@ -74,7 +74,7 @@ const sortLetterPositions = (usedPositions: CompleteCoordinates[]): LettersWithP
 
   return letters.map(letter => {
     const generateCoordinate = (): CompleteCoordinates => {
-      const positionX = Math.floor(Math.random() * (2 - 1 + 1) + 1)
+      const positionX = Math.floor(Math.random() * (2 - 1 + 1) + 2)
       const positionY1 = Math.floor(Math.random() * (2 - 1 + 1) + 1)
       const positionY2 = Math.floor(Math.random() * (5 - 4 + 1) + 4)
       const positionY = Math.random() > 0.5 ? positionY1 : positionY2
@@ -98,7 +98,7 @@ const sortQrPosition = (usedPositions: CompleteCoordinates[]): QRWithPosition[] 
 
   return qrs.map(qr => {
     const generateCoordinate = (): CompleteCoordinates => {
-      const positionX = Math.floor(Math.random() * (2 - 1 + 1) + 1)
+      const positionX = Math.floor(Math.random() * (2 - 1 + 1) + 2)
       const positionY1 = Math.floor(Math.random() * (2 - 1 + 1) + 1)
       const positionY2 = Math.floor(Math.random() * (5 - 4 + 1) + 4)
       const positionY = Math.random() > 0.5 ? positionY1 : positionY2
@@ -124,7 +124,8 @@ const sortColoredCubes = (usedPositions: CompleteCoordinates[]): ColorWithPositi
 
   return colors.map(color => {
     const generateCoordinate = (): CompleteCoordinates => {
-      const positionX = Math.floor(Math.random() * (2 - 1 + 1) + 1)
+      const positionX = Math.floor(Math.random() * (2 - 1 + 1) + 2)
+      // generate random number between 1 and 2
       const positionY1 = Math.floor(Math.random() * (2 - 1 + 1) + 1)
       const positionY2 = Math.floor(Math.random() * (5 - 4 + 1) + 4)
       const positionY = Math.random() > 0.5 ? positionY1 : positionY2
@@ -183,7 +184,6 @@ const stuff = () => {
 
           }
         })
-        console.log({ type: 'dropZone', content: [...mappedBlocks] })
         return { type: 'dropZone', content: [...mappedBlocks] }
       } else {
         return { ...col, type: "none" }
