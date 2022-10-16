@@ -44,24 +44,25 @@ const sortQrCodes = (): number[] => {
   return shuffled.slice(0, 4)
 }
 
-interface LettersWithPosition {
+interface GenericBlock {
+  coords: CompleteCoordinates;
+}
+
+interface LettersWithPosition extends GenericBlock {
   letter: string;
-  coords: CompleteCoordinates;
 }
 
-interface QRWithPosition {
+interface QRWithPosition extends GenericBlock {
   code: number;
-  coords: CompleteCoordinates;
 }
 
-type CubeColor = "green" | "blue" | "red" | "yellow"
+export type CubeColor = "green" | "blue" | "red" | "yellow"
 
-interface ColorWithPosition {
+interface ColorWithPosition extends GenericBlock {
   color: CubeColor;
-  coords: CompleteCoordinates;
 }
 
-interface CompleteCoordinates {
+export interface CompleteCoordinates {
   x: number;
   y: number;
   subX: number;
@@ -73,8 +74,10 @@ const sortLetterPositions = (usedPositions: CompleteCoordinates[]): LettersWithP
 
   return letters.map(letter => {
     const generateCoordinate = (): CompleteCoordinates => {
-      const positionX = Math.floor(Math.random() * (4 - 3 + 1) + 3)
-      const positionY = Math.floor(Math.random() * (4 - 2 + 1) + 2)
+      const positionX = Math.floor(Math.random() * (2 - 1 + 1) + 1)
+      const positionY1 = Math.floor(Math.random() * (2 - 1 + 1) + 1)
+      const positionY2 = Math.floor(Math.random() * (5 - 4 + 1) + 4)
+      const positionY = Math.random() > 0.5 ? positionY1 : positionY2
       const subX = Math.floor(Math.random() * (1 - 0 + 1) + 0)
       const subY = Math.floor(Math.random() * (1 - 0 + 1) + 0)
       return { x: positionX, y: positionY, subX, subY }
@@ -95,8 +98,11 @@ const sortQrPosition = (usedPositions: CompleteCoordinates[]): QRWithPosition[] 
 
   return qrs.map(qr => {
     const generateCoordinate = (): CompleteCoordinates => {
-      const positionX = Math.floor(Math.random() * (4 - 3 + 1) + 3)
-      const positionY = Math.floor(Math.random() * (4 - 2 + 1) + 2)
+      const positionX = Math.floor(Math.random() * (2 - 1 + 1) + 1)
+      const positionY1 = Math.floor(Math.random() * (2 - 1 + 1) + 1)
+      const positionY2 = Math.floor(Math.random() * (5 - 4 + 1) + 4)
+      const positionY = Math.random() > 0.5 ? positionY1 : positionY2
+
       const subX = Math.floor(Math.random() * (1 - 0 + 1) + 0)
       const subY = Math.floor(Math.random() * (1 - 0 + 1) + 0)
       return { x: positionX, y: positionY, subX, subY }
@@ -118,8 +124,10 @@ const sortColoredCubes = (usedPositions: CompleteCoordinates[]): ColorWithPositi
 
   return colors.map(color => {
     const generateCoordinate = (): CompleteCoordinates => {
-      const positionX = Math.floor(Math.random() * (4 - 3 + 1) + 3)
-      const positionY = Math.floor(Math.random() * (4 - 2 + 1) + 2)
+      const positionX = Math.floor(Math.random() * (2 - 1 + 1) + 1)
+      const positionY1 = Math.floor(Math.random() * (2 - 1 + 1) + 1)
+      const positionY2 = Math.floor(Math.random() * (5 - 4 + 1) + 4)
+      const positionY = Math.random() > 0.5 ? positionY1 : positionY2
       const subX = Math.floor(Math.random() * (1 - 0 + 1) + 0)
       const subY = Math.floor(Math.random() * (1 - 0 + 1) + 0)
       return { x: positionX, y: positionY, subX, subY }
@@ -145,24 +153,62 @@ const sortBlocksPositions = () => {
 
 }
 
+const stuff = () => {
+  const a = CubeGridData()
+  const sortedBlocks = sortBlocksPositions()
+
+  return a.map((line, i) => {
+    return line.map((col, j) => {
+      const blocks: GenericBlock[] = sortedBlocks.filter(block => block.coords.x === i && block.coords.y === j)
+      if (blocks.length > 0) {
+        const isLetterBlock = (block: GenericBlock): block is LettersWithPosition => {
+          return (block as LettersWithPosition).letter !== undefined
+        }
+
+        const isQrBlock = (block: GenericBlock): block is QRWithPosition => {
+          return (block as QRWithPosition).code !== undefined
+        }
+
+        const isColorBlock = (block: GenericBlock): block is ColorWithPosition => {
+          return (block as ColorWithPosition).color !== undefined
+        }
+
+        const mappedBlocks = blocks.map(block => {
+          if (isLetterBlock(block)) {
+            return { value: block.letter, coords: { ...block.coords, y: block.coords.y + 1 } }
+          } else if (isQrBlock(block)) {
+            return { value: block.code.toString(), coords: block.coords }
+          } else if (isColorBlock(block)) {
+            return { color: block.color, coords: block.coords }
+
+          }
+        })
+        console.log({ type: 'dropZone', content: [...mappedBlocks] })
+        return { type: 'dropZone', content: [...mappedBlocks] }
+      } else {
+        return { ...col, type: "none" }
+      }
+    })
+  })
+}
+
 const App = () => {
+  const a = stuff()
+  console.log(a)
   return (
     <div className="App">
       <div className="m-10">
         <h1>LARC - OPEN</h1>
       </div>
       <CubeGridContainer>
-        {CubeGridData().map((cubeGrid) => (
-          cubeGrid.map(cubeItem => {
-            if (shouldHighlight(cubeItem)) {
-              return <CubeGrid line={cubeItem.line} col={cubeItem.col} type="loadingZone" />
-            }
-            return <CubeGrid line={cubeItem.line} col={cubeItem.col} />
+        {a.map((line, i) => {
+          return line.map((col, j) => {
+            return <CubeGrid key={`${i}-${j}`} line={i} col={j} content={col.content} />
           })
-        ))}
+        })}
       </CubeGridContainer>
       <div className="m-10">
-        <button onClick={() => console.log(sortBlocksPositions())}>Randomize</button>
+        <button onClick={() => console.log(stuff())}>Randomize</button>
       </div>
 
     </div>
