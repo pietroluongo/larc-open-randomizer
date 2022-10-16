@@ -29,8 +29,6 @@ const CubeGrid: React.FC<Props> = ({ line, col, type = "none", content }) => {
         { coords: { x: line, y: col, subX: 1, subY: 1 }, value: "" },
     ]
 
-    console.log(`line: ${line}, col: ${col}, type: ${type}, content: ${content}`);
-
     const typeClassName = () => {
         switch (type) {
             case "loadingZone":
@@ -42,14 +40,25 @@ const CubeGrid: React.FC<Props> = ({ line, col, type = "none", content }) => {
         }
     }
 
+    const bottomClassName = () => {
+        if (line === 6) {
+
+            if ((col == 0 || col == 6)) return "bg-green-500";
+            if ((col == 1 || col == 5)) return "bg-blue-500";
+            if ((col == 2 || col == 4)) return "bg-yellow-500";
+            if (col == 3) return "bg-red-500";
+        }
+    }
+
     if (!content) {
         if (shouldHighlight({ line, col })) {
             return (<div className={`border border-blue-500 p-3 w-[5rem] h-[5rem] flex items-center justify-center bg-gray-700`}>
 
             </div>)
         }
+
         return (
-            <div className={`border border-blue-500 p-3 w-[5rem] h-[5rem] flex items-center justify-center ${typeClassName()}`}>
+            <div className={`border border-blue-500 p-3 w-[5rem] h-[5rem] flex items-center justify-center ${typeClassName()} ${bottomClassName()}`}>
                 ({line + 1},{col + 1})
             </div>
         )
@@ -82,7 +91,7 @@ const CubeGrid: React.FC<Props> = ({ line, col, type = "none", content }) => {
                         return updatedContent.map(content => {
                             if (content.coords.subX == i && content.coords.subY == j) {
                                 if (content.color) {
-                                    return <div className={`border border-blue-500 w-full h-full flex items-center justify-center bg-${content.color}-500`} >X</div>
+                                    return <div className={`border border-blue-500 w-full h-full flex items-center justify-center bg-${content.color}-500`} >{content.color[0].toUpperCase()}</div>
                                 }
                                 if (content.value) {
                                     if (!isNaN(+Number(content.value))) {

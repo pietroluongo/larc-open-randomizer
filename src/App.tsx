@@ -193,22 +193,21 @@ const stuff = () => {
 }
 
 const App = () => {
-  const a = stuff()
-  console.log(a)
+  const [blockData, setBlockData] = useState(stuff())
   return (
     <div className="App">
       <div className="m-10">
         <h1>LARC - OPEN</h1>
       </div>
       <CubeGridContainer>
-        {a.map((line, i) => {
+        {blockData.map((line, i) => {
           return line.map((col, j) => {
             return <CubeGrid key={`${i}-${j}`} line={i} col={j} content={col.content} />
           })
         })}
       </CubeGridContainer>
       <div className="m-10">
-        <button onClick={() => console.log(stuff())}>Randomize</button>
+        <button onClick={() => setBlockData(stuff())}>Randomize</button>
       </div>
 
     </div>
