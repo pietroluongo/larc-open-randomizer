@@ -99,7 +99,7 @@ const CubeGrid: React.FC<Props> = ({ line, col, type = "none", content }) => {
                                     if (!isNaN(+Number(content.value))) {
                                         return <div key={`${i}-${j}`} className={`border border-blue-500 w-full h-full flex items-center justify-center bg-white text-black`}>{content.value}</div>
                                     }
-                                    return <div key={`${i}-${j}`} className={`border border-blue-500 w-full h-full flex items-center justify-center bg-violet-800`}>{content.value.toUpperCase()}</div>
+                                    return <div key={`${i}-${j}`} className={`border border-blue-500 w-full h-full flex items-center justify-center bg-violet-800 text-white`}>{content.value.toUpperCase()}</div>
                                 }
                                 return (
                                     <div className="border border h-full w-full border-blue-500 flex items-center justify-center text-[#242424]">
